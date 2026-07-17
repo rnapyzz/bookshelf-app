@@ -9,10 +9,14 @@ use Illuminate\Database\Seeder;
 
 class ReviewSeeder extends Seeder
 {
-    private const TOTAL_REVIEWS =32;
+    private const TOTAL_REVIEWS = 32;
+
     private const MIN_REVIEWS_PER_BOOK = 2;
+
     private const MAX_REVIEWS_PER_BOOK = 4;
+
     private const MIN_RATING = 3;
+
     private const MAX_RATING = 5;
 
     /**
