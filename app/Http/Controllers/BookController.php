@@ -23,7 +23,7 @@ class BookController extends Controller
     public function show(Book $book)
     {
         $book->load([
-            'genres', 'reviews.user', 'reviews.likedByUsers'
+            'genres', 'reviews.user', 'reviews.likedByUsers',
         ]);
 
         $likedReviewIds = Auth::check() ? Auth::user()->likedReviews()->pluck('review_id')->toArray() : [];
@@ -51,7 +51,7 @@ class BookController extends Controller
             'image_url' => $validated['image_url'] ?? null,
         ]);
 
-        if (!empty($validated['genres'])) {
+        if (! empty($validated['genres'])) {
             $book->genres()->sync($validated['genres']);
         }
 
@@ -63,6 +63,7 @@ class BookController extends Controller
         $this->authorize('update', $book);
 
         $genres = Genre::all();
+
         return view('books.edit', compact('book', 'genres'));
     }
 
@@ -81,7 +82,7 @@ class BookController extends Controller
             'image_url' => $validated['image_url'] ?? null,
         ]);
 
-        if (!empty($validated['genres'])) {
+        if (! empty($validated['genres'])) {
             $book->genres()->sync($validated['genres']);
         }
 
