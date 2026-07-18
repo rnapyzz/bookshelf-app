@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\GenreController;
 use App\Http\Controllers\RankingController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ReviewLikeController;
@@ -25,6 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/books/{book}/favorites', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
     Route::post('/reviews/{review}/like', [ReviewLikeController::class, 'toggle'])->name('reviews.like');
+    Route::resource('genres', GenreController::class);
 });
 
 Route::get('/books', [BookController::class, 'index'])->name('books.index');
@@ -36,8 +38,3 @@ Route::put('/reviews/{review}', [ReviewController::class, 'update'])->name('revi
 Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 
 Route::get('/ranking', [RankingController::class, 'index'])->name('ranking.index');
-
-// 動作確認用スタブ
-Route::get('/genres', function () {
-    return 'TODO';
-})->name('genres.index');
