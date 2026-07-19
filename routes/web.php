@@ -38,3 +38,9 @@ Route::put('/reviews/{review}', [ReviewController::class, 'update'])->name('revi
 Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 
 Route::get('/ranking', [RankingController::class, 'index'])->name('ranking.index');
+
+
+// スタブ
+Route::get('/reports', function () { return 'TODO'; })->name('reports.index');
+Route::get('/reading-plans', function () { return 'TODO'; })->name('reading-plans.index');
+Route::get('/notifications', function () { return 'TODO'; })->name('notifications.index');
