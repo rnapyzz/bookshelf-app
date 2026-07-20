@@ -3,12 +3,33 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Book\SearchBookRequest;
+use App\Http\Resources\BookResource;
+use App\Models\Book;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class BookController extends Controller
 {
-    public function index(Request $request)
+    /**
+     * 書籍一覧を取得する
+     *
+     * @param SearchBookRequest $request
+     * @return AnonymousResourceCollection
+     */
+    public function index(SearchBookRequest $request):AnonymousResourceCollection
     {
-        return 'hello world';
+        $filters = $request->only(['keyword', 'genre']);
+        $perPage = $request->input('per_page', 10);
+
+        $books = Book::query()
+            ->with('genres')
+            ->withAvg('reviews', 'rating')
+            ->withCount('reviews')
+            ->filter($filters)
+            ->latest()
+            ->paginate($perPage)
+            ->withQueryString();
+
+        return BookResource::collection($books);
     }
 }
