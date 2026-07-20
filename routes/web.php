@@ -4,6 +4,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\RankingController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ReviewLikeController;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
     Route::post('/reviews/{review}/like', [ReviewLikeController::class, 'toggle'])->name('reviews.like');
     Route::resource('genres', GenreController::class);
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 });
 
 Route::get('/books', [BookController::class, 'index'])->name('books.index');
@@ -42,6 +44,5 @@ Route::get('/ranking', [RankingController::class, 'index'])->name('ranking.index
 
 
 // スタブ
-Route::get('/reports', function () { return 'TODO'; })->name('reports.index');
 Route::get('/reading-plans', function () { return 'TODO'; })->name('reading-plans.index');
 Route::get('/notifications', function () { return 'TODO'; })->name('notifications.index');
