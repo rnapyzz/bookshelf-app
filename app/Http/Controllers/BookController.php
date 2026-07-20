@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreBookRequest;
-use App\Http\Requests\UpdateBookRequest;
+use App\Http\Requests\Book\SearchBookRequest;
+use App\Http\Requests\Book\StoreBookRequest;
+use App\Http\Requests\Book\UpdateBookRequest;
 use App\Models\Book;
 use App\Models\Genre;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\View\View;
@@ -19,7 +19,7 @@ class BookController extends Controller
     /**
      * 書籍一覧を表示する
      */
-    public function index(Request $request): View
+    public function index(SearchBookRequest $request): View
     {
         $filters = $request->only(['keyword', 'genre', 'sort']);
 
@@ -34,7 +34,10 @@ class BookController extends Controller
         return view('books.index', compact('books', 'genres'));
     }
 
-    public function show(Book $book)
+    /**
+     * 書籍詳細画面を表示する
+     */
+    public function show(Book $book): View
     {
         $book->load([
             'genres', 'reviews.user', 'reviews.likedByUsers',
@@ -45,6 +48,9 @@ class BookController extends Controller
         return view('books.show', compact('book', 'likedReviewIds'));
     }
 
+    /**
+     * 書籍新規登録画面を表示する
+     */
     public function create(): View
     {
         $genres = Genre::all();
@@ -52,6 +58,9 @@ class BookController extends Controller
         return view('books.create', compact('genres'));
     }
 
+    /**
+     * 書籍を新規登録する
+     */
     public function store(StoreBookRequest $request): RedirectResponse
     {
         $validated = $request->validated();
@@ -73,6 +82,8 @@ class BookController extends Controller
     }
 
     /**
+     * 書籍情報の編集画面を表示する
+     *
      * @throws AuthorizationException
      */
     public function edit(Book $book): View
@@ -85,6 +96,8 @@ class BookController extends Controller
     }
 
     /**
+     * 書籍情報を更新する
+     *
      * @throws AuthorizationException
      */
     public function update(UpdateBookRequest $request, Book $book): RedirectResponse
@@ -110,6 +123,8 @@ class BookController extends Controller
     }
 
     /**
+     * 書籍情報を削除する
+     *
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -126,7 +141,7 @@ class BookController extends Controller
     }
 
     /**
-     * ISBからGoogle Books APIを利用して書籍情報を取得する
+     * ISBNからGoogle Books APIを利用して書籍情報を取得する
      */
     public function fetchByIsbn(string $isbn): JsonResponse
     {
