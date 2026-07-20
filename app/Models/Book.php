@@ -18,8 +18,6 @@ class Book extends Model
 
     /**
      * 書籍に紐づくジャンルを取得
-     *
-     * @return BelongsToMany
      */
     public function genres(): BelongsToMany
     {
@@ -28,8 +26,6 @@ class Book extends Model
 
     /**
      * 書籍に紐づくレビューを取得
-     *
-     * @return HasMany
      */
     public function reviews(): HasMany
     {
@@ -38,8 +34,6 @@ class Book extends Model
 
     /**
      * 書籍をお気に入りしたユーザーを取得
-     *
-     * @return BelongsToMany
      */
     public function favoritedByUsers(): BelongsToMany
     {
@@ -48,10 +42,6 @@ class Book extends Model
 
     /**
      * 検索・絞り込み・並び替えを適用するクエリスコープ
-     *
-     * @param Builder $query
-     * @param array $filters
-     * @return Builder
      */
     public function scopeFilter(Builder $query, array $filters): Builder
     {
@@ -70,16 +60,16 @@ class Book extends Model
 
         $sort = $filters['sort'] ?? 'newest';
         switch ($sort) {
-            case 'oldest';
+            case 'oldest':
                 $query->orderBy('created_at');
                 break;
-            case 'rating';
+            case 'rating':
                 $query->orderByDesc('reviews_avg_rating');
                 break;
-            case 'title';
+            case 'title':
                 $query->orderBy('title');
                 break;
-            case 'newest';
+            case 'newest':
             default:
                 $query->orderBy('created_at', 'desc');
                 break;

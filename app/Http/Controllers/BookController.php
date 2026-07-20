@@ -18,9 +18,6 @@ class BookController extends Controller
 {
     /**
      * 書籍一覧を表示する
-     *
-     * @param Request $request
-     * @return View
      */
     public function index(Request $request): View
     {
@@ -48,9 +45,6 @@ class BookController extends Controller
         return view('books.show', compact('book', 'likedReviewIds'));
     }
 
-    /**
-     * @return View
-     */
     public function create(): View
     {
         $genres = Genre::all();
@@ -58,10 +52,6 @@ class BookController extends Controller
         return view('books.create', compact('genres'));
     }
 
-    /**
-     * @param StoreBookRequest $request
-     * @return RedirectResponse
-     */
     public function store(StoreBookRequest $request): RedirectResponse
     {
         $validated = $request->validated();
@@ -83,8 +73,6 @@ class BookController extends Controller
     }
 
     /**
-     * @param Book $book
-     * @return View
      * @throws AuthorizationException
      */
     public function edit(Book $book): View
@@ -97,10 +85,6 @@ class BookController extends Controller
     }
 
     /**
-     *
-     * @param UpdateBookRequest $request
-     * @param Book $book
-     * @return RedirectResponse
      * @throws AuthorizationException
      */
     public function update(UpdateBookRequest $request, Book $book): RedirectResponse
@@ -126,11 +110,9 @@ class BookController extends Controller
     }
 
     /**
+     * @return RedirectResponse
      *
-     *
-     * @param Book $book
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      */
     public function destroy(Book $book)
     {
@@ -145,19 +127,16 @@ class BookController extends Controller
 
     /**
      * ISBからGoogle Books APIを利用して書籍情報を取得する
-     *
-     * @param string $isbn
-     * @return JsonResponse
      */
     public function fetchByIsbn(string $isbn): JsonResponse
     {
-        $response = Http::get("https://www.googleapis.com/books/v1/volumes", [
+        $response = Http::get('https://www.googleapis.com/books/v1/volumes', [
             'q' => "isbn:{$isbn}",
         ]);
 
         if ($response->status() === 429) {
             return response()->json([
-                'error' => 'APIの利用回数上限に達しました。しばらく時間をおいてから検索するか、書籍情報を手動で入力ください'
+                'error' => 'APIの利用回数上限に達しました。しばらく時間をおいてから検索するか、書籍情報を手動で入力ください',
             ], 429);
         }
 
@@ -169,7 +148,7 @@ class BookController extends Controller
 
         return response()->json([
             'title' => $volumeInfo['title'] ?? null,
-            'author' => isset($volumeInfo['authors']) ? implode(', ', $volumeInfo['authors']) : null ,
+            'author' => isset($volumeInfo['authors']) ? implode(', ', $volumeInfo['authors']) : null,
             'description' => $volumeInfo['description'] ?? null,
             'image_url' => $volumeInfo['imageLinks']['thumbnail'] ?? null,
             'published_date' => $volumeInfo['publishedDate'] ?? null,
