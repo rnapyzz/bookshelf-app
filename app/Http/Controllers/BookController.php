@@ -6,18 +6,31 @@ use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
 use App\Models\Genre;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class BookController extends Controller
 {
-    public function index()
+    /**
+     * 書籍一覧を表示する
+     *
+     * @param Request $request
+     * @return View
+     */
+    public function index(Request $request): View
     {
-        $books = Book::with('genres')
-            ->withAvg('reviews', 'rating')
-            ->latest()
-            ->paginate(10);
+        $filters = $request->only(['keyword', 'genre', 'sort']);
 
-        return view('books.index', compact('books'));
+        $books = Book::query()
+            ->with('genres')
+            ->withAvg('reviews', 'rating')
+            ->filter($filters)
+            ->paginate(10)
+            ->withQueryString();
+        $genres = Genre::all();
+
+        return view('books.index', compact('books', 'genres'));
     }
 
     public function show(Book $book)
