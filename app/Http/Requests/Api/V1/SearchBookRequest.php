@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api\V1;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SearchBookRequest extends FormRequest
@@ -17,7 +18,7 @@ class SearchBookRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -31,8 +32,6 @@ class SearchBookRequest extends FormRequest
 
     /**
      * バリデーションエラー時の日本語メッセージ
-     *
-     * @return array
      */
     public function messages(): array
     {
