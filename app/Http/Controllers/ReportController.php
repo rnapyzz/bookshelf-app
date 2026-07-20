@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ReadingPlanStatus;
 use App\Models\Book;
 use App\Models\Genre;
+use App\Models\ReadingPlan;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +24,9 @@ class ReportController extends Controller
 
         // 基本統計
         $totalReviews = (clone $userReviews)->count();
-        $booksRead = (clone $userReviews)->distinct('book_id')->count('book_id');
+        $booksRead = ReadingPlan::where('user_id', $user->id)
+            ->where('status', ReadingPlanStatus::Completed)
+            ->count();
         $averageRating = (clone $userReviews)->avg('rating') ?? 0.0;
 
         $summary = [
