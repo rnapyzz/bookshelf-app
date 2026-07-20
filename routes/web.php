@@ -24,6 +24,7 @@ Route::get('/', [BookController::class, 'index'])->name('home');
 Route::middleware('auth')->group(function () {
     Route::resource('books', BookController::class)->except(['index', 'show']);
     Route::post('/books/{book}/favorites', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
+    Route::get('/books/isbn/{isbn}', [BookController::class, 'fetchByIsbn']);
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
     Route::post('/reviews/{review}/like', [ReviewLikeController::class, 'toggle'])->name('reviews.like');
     Route::resource('genres', GenreController::class);
