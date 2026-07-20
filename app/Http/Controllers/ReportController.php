@@ -13,9 +13,6 @@ class ReportController extends Controller
 {
     /**
      * マイ読書レポートを表示する
-     *
-     * @param Request $request
-     * @return View
      */
     public function index(Request $request): View
     {

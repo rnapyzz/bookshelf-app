@@ -4,6 +4,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\RankingController;
+use App\Http\Controllers\ReadingPlanController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ReviewLikeController;
@@ -30,6 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/reviews/{review}/like', [ReviewLikeController::class, 'toggle'])->name('reviews.like');
     Route::resource('genres', GenreController::class);
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::resource('reading-plans', ReadingPlanController::class)->except(['show']);
+    Route::post('/reading-plans/{reading_plan}/complete', [ReadingPlanController::class, 'complete'])->name('reading-plans.complete');
 });
 
 Route::get('/books', [BookController::class, 'index'])->name('books.index');
@@ -42,7 +45,7 @@ Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('
 
 Route::get('/ranking', [RankingController::class, 'index'])->name('ranking.index');
 
-
 // スタブ
-Route::get('/reading-plans', function () { return 'TODO'; })->name('reading-plans.index');
-Route::get('/notifications', function () { return 'TODO'; })->name('notifications.index');
+Route::get('/notifications', function () {
+    return 'TODO';
+})->name('notifications.index');
