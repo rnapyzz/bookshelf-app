@@ -6,8 +6,12 @@ use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
 use App\Models\Genre;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\View\View;
 
 class BookController extends Controller
@@ -44,14 +48,21 @@ class BookController extends Controller
         return view('books.show', compact('book', 'likedReviewIds'));
     }
 
-    public function create()
+    /**
+     * @return View
+     */
+    public function create(): View
     {
         $genres = Genre::all();
 
         return view('books.create', compact('genres'));
     }
 
-    public function store(StoreBookRequest $request)
+    /**
+     * @param StoreBookRequest $request
+     * @return RedirectResponse
+     */
+    public function store(StoreBookRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -71,7 +82,12 @@ class BookController extends Controller
         return redirect()->route('books.show', $book->id)->with('success', '書籍を登録しました');
     }
 
-    public function edit(Book $book)
+    /**
+     * @param Book $book
+     * @return View
+     * @throws AuthorizationException
+     */
+    public function edit(Book $book): View
     {
         $this->authorize('update', $book);
 
@@ -80,7 +96,14 @@ class BookController extends Controller
         return view('books.edit', compact('book', 'genres'));
     }
 
-    public function update(UpdateBookRequest $request, Book $book)
+    /**
+     *
+     * @param UpdateBookRequest $request
+     * @param Book $book
+     * @return RedirectResponse
+     * @throws AuthorizationException
+     */
+    public function update(UpdateBookRequest $request, Book $book): RedirectResponse
     {
         $this->authorize('update', $book);
 
@@ -102,6 +125,13 @@ class BookController extends Controller
         return redirect()->route('books.show', $book)->with('success', '書籍情報を更新しました');
     }
 
+    /**
+     *
+     *
+     * @param Book $book
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function destroy(Book $book)
     {
         $this->authorize('delete', $book);
@@ -111,5 +141,38 @@ class BookController extends Controller
         $book->delete();
 
         return redirect()->route('books.index')->with('success', '書籍を削除しました');
+    }
+
+    /**
+     * ISBからGoogle Books APIを利用して書籍情報を取得する
+     *
+     * @param string $isbn
+     * @return JsonResponse
+     */
+    public function fetchByIsbn(string $isbn): JsonResponse
+    {
+        $response = Http::get("https://www.googleapis.com/books/v1/volumes", [
+            'q' => "isbn:{$isbn}",
+        ]);
+
+        if ($response->status() === 429) {
+            return response()->json([
+                'error' => 'APIの利用回数上限に達しました。しばらく時間をおいてから検索するか、書籍情報を手動で入力ください'
+            ], 429);
+        }
+
+        if ($response->failed() || empty($response->json('items'))) {
+            return response()->json(['error' => '書籍情報が見つかりませんでした'], 404);
+        }
+
+        $volumeInfo = $response->json('items.0.volumeInfo');
+
+        return response()->json([
+            'title' => $volumeInfo['title'] ?? null,
+            'author' => isset($volumeInfo['authors']) ? implode(', ', $volumeInfo['authors']) : null ,
+            'description' => $volumeInfo['description'] ?? null,
+            'image_url' => $volumeInfo['imageLinks']['thumbnail'] ?? null,
+            'published_date' => $volumeInfo['publishedDate'] ?? null,
+        ]);
     }
 }
