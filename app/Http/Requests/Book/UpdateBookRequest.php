@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Book;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -36,6 +36,9 @@ class UpdateBookRequest extends FormRequest
         ];
     }
 
+    /**
+     * バリデーションエラー時の日本語メッセージ
+     */
     public function messages(): array
     {
         return [
