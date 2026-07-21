@@ -17,6 +17,15 @@ class Book extends Model
     ];
 
     /**
+     * 型キャストの必要のある属性
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'published_date' => 'date',
+    ];
+
+    /**
      * 書籍に紐づくジャンルを取得
      */
     public function genres(): BelongsToMany
