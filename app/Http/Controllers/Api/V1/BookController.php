@@ -29,4 +29,16 @@ class BookController extends Controller
 
         return BookResource::collection($books);
     }
+
+    /**
+     * 書籍詳細を取得する
+     */
+    public function show(Book $book): BookResource
+    {
+        $book->load('genres', 'reviews', 'reviews.user')
+            ->loadAvg('reviews', 'rating')
+            ->loadCount('reviews');
+
+        return new BookResource($book);
+    }
 }
