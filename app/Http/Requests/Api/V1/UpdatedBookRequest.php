@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Book;
+namespace App\Http\Requests\Api\V1;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateBookRequest extends FormRequest
+class UpdatedBookRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,16 +23,21 @@ class UpdateBookRequest extends FormRequest
      */
     public function rules(): array
     {
-        $bookId = $this->route('book')?->id;
+        $book = $this->route('book');
 
         return [
             'title' => ['required', 'string', 'max:255'],
             'author' => ['required', 'string', 'max:255'],
-            'isbn' => ['nullable', 'string', 'regex:/^[0-9]{13}$/', Rule::unique('books', 'isbn')->ignore($bookId)],
+            'isbn' => [
+                'nullable',
+                'string',
+                'regex:/^[0-9]{13}$/',
+                Rule::unique('books', 'isbn')->ignore($book),
+            ],
             'published_date' => ['nullable', 'date'],
             'description' => ['nullable', 'string', 'max:1000'],
             'image_url' => ['nullable', 'url', 'max:255'],
-            'genres' => ['required', 'array', 'min:1'],
+            'genres' => ['required', 'array'],
             'genres.*' => ['integer', 'exists:genres,id'],
         ];
     }
@@ -53,7 +58,7 @@ class UpdateBookRequest extends FormRequest
             'description.max' => '説明は1000文字以内で入力してください',
             'image_url.url' => '有効なURL形式で入力してください',
             'image_url.max' => '画像URLは255文字以内で入力してください',
-            'genres.required' => 'ジャンルを少なくとも1つ選択してください',
+            'genres.required' => 'ジャンルを少なくとも1つ指定してください',
             'genres.*.integer' => 'ジャンルIDは整数で入力してください',
             'genres.*.exists' => '指定されたジャンルは存在しません',
         ];

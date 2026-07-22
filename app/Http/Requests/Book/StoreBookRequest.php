@@ -30,6 +30,7 @@ class StoreBookRequest extends FormRequest
             'description' => ['nullable', 'string', 'max:1000'],
             'image_url' => ['nullable', 'url', 'max:255'],
             'genres' => ['required', 'array', 'min:1'],
+            'genres.*' => ['integer', 'exists:genres,id'],
         ];
     }
 
@@ -46,9 +47,12 @@ class StoreBookRequest extends FormRequest
             'isbn.regex' => 'ISBN-13は13桁の数字で入力してください',
             'isbn.unique' => 'このISBN-13は既に登録されています',
             'published_date.date' => '有効な日付形式で入力してください',
+            'description.max' => '説明は1000文字以内で入力してください',
             'image_url.url' => '有効なURL形式で入力してください',
             'image_url.max' => '画像URLは255文字以内で入力してください',
             'genres.required' => 'ジャンルを少なくとも1つ選択してください',
+            'genres.*.integer' => 'ジャンルIDは整数で入力してください',
+            'genres.*.exists' => '指定されたジャンルは存在しません',
         ];
     }
 }
