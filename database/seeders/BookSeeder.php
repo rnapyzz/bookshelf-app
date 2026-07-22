@@ -20,7 +20,7 @@ class BookSeeder extends Seeder
             [
                 'title' => '吾輩は猫である',
                 'author' => '夏目漱石',
-                'isbn' => '978101010014',
+                'isbn' => '9784101010014',
                 'published_date' => '1905-01-01',
                 'image_url' => 'https://placehold.co/200x300/e2e8f0/475569?text=1',
                 'genres' => ['小説'],
