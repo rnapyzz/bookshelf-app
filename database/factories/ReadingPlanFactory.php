@@ -2,15 +2,16 @@
 
 namespace Database\Factories;
 
+use App\Enums\ReadingPlanStatus;
 use App\Models\Book;
-use App\Models\Favorite;
+use App\Models\ReadingPlan;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Favorite>
+ * @extends Factory<ReadingPlan>
  */
-class FavoriteFactory extends Factory
+class ReadingPlanFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -22,6 +23,9 @@ class FavoriteFactory extends Factory
         return [
             'user_id' => User::factory(),
             'book_id' => Book::factory(),
+            'target_date' => $this->faker->date(),
+            'completed_at' => null,
+            'status' => ReadingPlanStatus::NotStarted,
         ];
     }
 }
