@@ -41,7 +41,11 @@ class ReportController extends Controller
             ->selectRaw('rating, count(*) as count')
             ->groupBy('rating')
             ->pluck('count', 'rating');
-        $ratingDist = $ratingDist->merge($rawDist);
+        $ratingDist = $ratingDist->map(function ($value, $key) use ($rawDist) {
+            return $value + ($rawDist->get($key, 0));
+        })->mapWithKeys(function ($value, $key) {
+            return [$key - 1 => $value];
+        });
 
         // 評価TOP5
         $topRatedBooks = Book::query()
