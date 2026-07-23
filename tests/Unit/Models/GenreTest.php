@@ -7,7 +7,6 @@ use App\Models\Genre;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-
 class GenreTest extends TestCase
 {
     use RefreshDatabase;
@@ -26,5 +25,4 @@ class GenreTest extends TestCase
             $genre->books->pluck('id')->sort()->values(),
         );
     }
-
 }

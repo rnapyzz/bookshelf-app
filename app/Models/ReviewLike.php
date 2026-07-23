@@ -14,13 +14,13 @@ class ReviewLike extends Model
         'user_id', 'review_id',
     ];
 
-    public function users(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class);
-    }
-
-    public function reviews(): BelongsToMany
-    {
-        return $this->belongsToMany(Review::class);
-    }
+    //    public function users(): BelongsToMany
+    //    {
+    //        return $this->belongsToMany(User::class);
+    //    }
+    //
+    //    public function reviews(): BelongsToMany
+    //    {
+    //        return $this->belongsToMany(Review::class);
+    //    }
 }

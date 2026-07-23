@@ -75,7 +75,7 @@ class BookTest extends TestCase
     }
 
     /** @test */
-    public function ジャンルIDで書籍が正しく絞り込まれる(): void
+    public function ジャンル_i_dで書籍が正しく絞り込まれる(): void
     {
         $genre1 = Genre::factory()->create();
         $genre2 = Genre::factory()->create();
