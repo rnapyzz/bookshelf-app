@@ -19,6 +19,8 @@ return new class extends Migration
             $table->timestamp('completed_at')->nullable();
             $table->string('status')->default('not_started');
             $table->timestamps();
+
+            $table->unique(['book_id', 'user_id']);
         });
     }
 

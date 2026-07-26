@@ -4,6 +4,7 @@ namespace App\Http\Requests\ReadingPlan;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreReadingPlanRequest extends FormRequest
 {
@@ -23,7 +24,13 @@ class StoreReadingPlanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'book_id' => ['required', 'exists:books,id'],
+            'book_id' => [
+                'required',
+                'exists:books,id',
+                Rule::unique('reading_plans')->where(function ($query) {
+                    return $query->where('user_id', $this->user()->id);
+                }),
+            ],
             'target_date' => ['required', 'date'],
         ];
     }
@@ -36,6 +43,7 @@ class StoreReadingPlanRequest extends FormRequest
         return [
             'book_id.required' => '書籍を選択してください',
             'book_id.exists' => '書籍が見つかりません',
+            'book_id.unique' => '書籍の計画は既に作成されています',
             'target_date.required' => '期日を設定してください',
             'target_date.date' => '期日は日付形式で入力してください',
         ];
