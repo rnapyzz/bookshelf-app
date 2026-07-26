@@ -20,7 +20,7 @@ class BookController extends Controller
     public function index(SearchBookRequest $request): AnonymousResourceCollection
     {
         $filters = $request->only(['keyword', 'genre']);
-        $perPage = $request->input('per_page', 10);
+        $perPage = $request->input('per_page', 20);
 
         $books = Book::query()
             ->with('genres')
