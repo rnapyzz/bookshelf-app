@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Book\SearchBookRequest;
 use App\Http\Requests\Book\StoreBookRequest;
 use App\Http\Requests\Book\UpdateBookRequest;
 use App\Models\Book;
@@ -10,6 +9,7 @@ use App\Models\Genre;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\View\View;
@@ -19,7 +19,7 @@ class BookController extends Controller
     /**
      * 書籍一覧を表示する
      */
-    public function index(SearchBookRequest $request): View
+    public function index(Request $request): View
     {
         $filters = $request->only(['keyword', 'genre', 'sort']);
 
