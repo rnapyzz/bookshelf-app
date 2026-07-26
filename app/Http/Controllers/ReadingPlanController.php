@@ -78,9 +78,14 @@ class ReadingPlanController extends Controller
     {
         $this->authorize('update', $readingPlan);
 
-        $readingPlan->update([
+        $data = [
             'target_date' => $request->validated('target_date'),
-        ]);
+        ];
+
+        if ($readingPlan->status === ReadingPlanStatus::Expired) {
+            $data['status'] = ReadingPlanStatus::NotStarted;
+        }
+        $readingPlan->update($data);
 
         return redirect()->route('reading-plans.index')->with('success', '読書計画を更新しました');
     }

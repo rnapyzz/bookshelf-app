@@ -31,7 +31,7 @@ class StoreReadingPlanRequest extends FormRequest
                     return $query->where('user_id', $this->user()->id);
                 }),
             ],
-            'target_date' => ['required', 'date'],
+            'target_date' => ['required', 'date', 'after_or_equal:today'],
         ];
     }
 
@@ -46,6 +46,7 @@ class StoreReadingPlanRequest extends FormRequest
             'book_id.unique' => '書籍の計画は既に作成されています',
             'target_date.required' => '期日を設定してください',
             'target_date.date' => '期日は日付形式で入力してください',
+            'target_date.after_or_equal' => '期日には今日以降の日付を設定してください',
         ];
     }
 }
