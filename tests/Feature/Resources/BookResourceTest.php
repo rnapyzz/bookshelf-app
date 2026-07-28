@@ -13,7 +13,7 @@ class BookResourceTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function 正しいResource形式に変換される(): void
+    public function 正しい_resource形式に変換される(): void
     {
         $book = Book::factory()->create([
             'title' => 'Test Book',

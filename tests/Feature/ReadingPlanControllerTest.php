@@ -96,7 +96,7 @@ class ReadingPlanControllerTest extends TestCase
     /** @test */
     public function 自分の読書計画を更新できる(): void
     {
-        $plan =ReadingPlan::factory()->create([
+        $plan = ReadingPlan::factory()->create([
             'user_id' => $this->user->id,
             'status' => ReadingPlanStatus::Expired,
         ]);
@@ -108,7 +108,7 @@ class ReadingPlanControllerTest extends TestCase
         $response = $this->actingAs($this->user)->put(route('reading-plans.update', $plan), $updateData);
 
         $response->assertRedirect(route('reading-plans.index'));
-        $this->assertDatabaseHas('reading_plans' ,[
+        $this->assertDatabaseHas('reading_plans', [
             'id' => $plan->id,
             'status' => ReadingPlanStatus::NotStarted->value,
         ]);

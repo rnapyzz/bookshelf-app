@@ -19,7 +19,7 @@ class NotificationControllerTest extends TestCase
     }
 
     /** @test */
-    public function 認証ユーザーは通知一覧画面を表示できる():void
+    public function 認証ユーザーは通知一覧画面を表示できる(): void
     {
         $this->user->notifications()->create([
             'id' => 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
@@ -40,7 +40,7 @@ class NotificationControllerTest extends TestCase
     {
         $notification = $this->user->notifications()->create([
             'id' => 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-            'type'=> 'App\Notifications\SampleNotification',
+            'type' => 'App\Notifications\SampleNotification',
             'data' => ['message' => 'Test Notification'],
             'read_at' => null,
         ]);

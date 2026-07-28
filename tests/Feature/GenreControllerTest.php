@@ -6,7 +6,6 @@ use App\Models\Book;
 use App\Models\Genre;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class GenreControllerTest extends TestCase
@@ -17,10 +16,8 @@ class GenreControllerTest extends TestCase
 
     /**
      * テスト用のユーザーを作成する
-     *
-     * @return void
      */
-    protected function setUp():void
+    protected function setUp(): void
     {
         parent::setUp();
 
