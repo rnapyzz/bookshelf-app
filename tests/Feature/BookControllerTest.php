@@ -6,6 +6,7 @@ use App\Models\Book;
 use App\Models\Genre;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class BookControllerTest extends TestCase
@@ -187,11 +188,80 @@ class BookControllerTest extends TestCase
     }
 
     /** @test */
-    public function isb_nから_google_books_ap_iで書籍情報を取得できる(): void {}
+    public function isbnから_google_books_apiで書籍情報を取得できる(): void
+    {
+        $user = User::factory()->create();
+
+        Http::fake([
+            'www.googleapis.com/books/v1/volumes*' => Http::response([
+                'items' => [
+                    [
+                        'volumeInfo' => [
+                            'title' => 'プログラミングRust 第2版',
+                            'authors' => [
+                                'Jim Blandy',
+                                'Jason Orendorff',
+                                'Leonora F. S. Tindall',
+                            ],
+                            'description' => 'Rustは、安全性、高速性、並行性に優れた言語。概要と用途について書かれた書籍で、ほとんどの機能を詳細にカバーした決定版。',
+                            'imageLinks' => [
+                                'thumbnail' => 'http://example.com/thumbnail.jpg',
+                            ],
+                            'publishedDate' => '2022-01-19',
+                        ],
+                    ],
+                ],
+            ], 200),
+        ]);
+
+        $isbn = '9784873119786';
+
+        $response = $this->actingAs($user)->getJson("/books/isbn/{$isbn}");
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'title' => 'プログラミングRust 第2版',
+                'author' => 'Jim Blandy, Jason Orendorff, Leonora F. S. Tindall',
+                'description' => 'Rustは、安全性、高速性、並行性に優れた言語。概要と用途について書かれた書籍で、ほとんどの機能を詳細にカバーした決定版。',
+                'image_url' => 'http://example.com/thumbnail.jpg',
+                'published_date' => '2022-01-19',
+            ]);
+    }
 
     /** @test */
-    public function google_books_ap_iが429エラーを返した際に適切にエラーレスポンスが返る(): void {}
+    public function google_books_apiが429エラーを返した際に適切にエラーレスポンスが返る(): void
+    {
+
+        $user = User::factory()->create();
+
+        Http::fake([
+            'www.googleapis.com/books/v1/volumes*' => Http::response(null, 429),
+        ]);
+
+        $response = $this->actingAs($user)->getJson('/books/isbn/9784873119786');
+
+        $response->assertStatus(429)
+            ->assertJson([
+                'error' => 'APIの利用回数上限に達しました。しばらく時間をおいてから検索するか、書籍情報を手動で入力ください',
+            ]);
+    }
 
     /** @test */
-    public function google_books_ap_iで書籍が見つからなかった場合は404が返る(): void {}
+    public function google_books_apiで書籍が見つからなかった場合は404が返る(): void
+    {
+        $user = User::factory()->create();
+
+        Http::fake([
+            'www.googleapis.com/books/v1/volumes*' => Http::response([
+                'items' => [],
+            ], 200),
+        ]);
+
+        $response = $this->actingAs($user)->getJson('/books/isbn/0000000000000');
+
+        $response->assertStatus(404)
+            ->assertJson([
+                'error' => '書籍情報が見つかりませんでした',
+            ]);
+    }
 }
