@@ -145,8 +145,11 @@ class BookController extends Controller
      */
     public function fetchByIsbn(string $isbn): JsonResponse
     {
+        $apiKey = config('services.google.books_api_key');
+
         $response = Http::get('https://www.googleapis.com/books/v1/volumes', [
             'q' => "isbn:{$isbn}",
+            'key' => $apiKey,
         ]);
 
         if ($response->status() === 429) {
