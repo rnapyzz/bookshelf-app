@@ -7,6 +7,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
@@ -45,7 +46,7 @@ class Handler extends ExceptionHandler
             }
         });
 
-        $this->renderable(function (AuthorizationException $e, Request $request) {
+        $this->renderable(function (AccessDeniedHttpException $e, Request $request) {
             if ($request->is('api/*') || $request->expectsJson()) {
                 return response()->json([
                     'message' => 'この操作を行う権限がありません',
@@ -66,14 +67,6 @@ class Handler extends ExceptionHandler
                 return response()->json([
                     'message' => '許可されていないHTTPメソッドです',
                 ], 405);
-            }
-        });
-
-        $this->renderable(function (Throwable $e, Request $request) {
-            if (($request->is('api/*') || $request->expectsJson()) && ! config('app.debug')) {
-                return response()->json([
-                    'message' => 'サーバー内部でエラーが発生しました',
-                ], 500);
             }
         });
     }
