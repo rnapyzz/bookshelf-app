@@ -4,7 +4,6 @@ namespace Tests\Unit\Notifications;
 
 use App\Models\User;
 use App\Notifications\BookReminderNotification;
-use Illuminate\Notifications\Messages\MailMessage;
 use Mockery;
 use Tests\TestCase;
 
@@ -12,7 +11,7 @@ class BookReminderNotificationTest extends TestCase
 {
     protected function tearDown(): void
     {
-        Mockery::close();;
+        Mockery::close();
         parent::tearDown();
     }
 
@@ -20,7 +19,7 @@ class BookReminderNotificationTest extends TestCase
     public function 配信チャンネルとしてdatabaseを返す(): void
     {
         $notification = new BookReminderNotification(null, 'on_due_date');
-        $user = new User();
+        $user = new User;
 
         $channels = $notification->via($user);
 
@@ -34,7 +33,7 @@ class BookReminderNotificationTest extends TestCase
         $plan = (object) ['book' => $book];
 
         $notification = new BookReminderNotification($plan, 'three_days_before');
-        $user = new User();
+        $user = new User;
 
         $data = $notification->toArray($user);
 
@@ -52,7 +51,7 @@ class BookReminderNotificationTest extends TestCase
         $plan = (object) ['book' => $book];
 
         $notification = new BookReminderNotification($plan, 'on_due_date');
-        $user = new User();
+        $user = new User;
 
         $data = $notification->toArray($user);
 
@@ -70,7 +69,7 @@ class BookReminderNotificationTest extends TestCase
         $plan = (object) ['book' => $book];
 
         $notification = new BookReminderNotification($plan, 'three_days_after');
-        $user = new User();
+        $user = new User;
 
         $data = $notification->toArray($user);
 
@@ -88,7 +87,7 @@ class BookReminderNotificationTest extends TestCase
         $plan = (object) ['book' => $book];
 
         $notification = new BookReminderNotification($plan, 'unknown');
-        $user = new User();
+        $user = new User;
 
         $data = $notification->toArray($user);
 
@@ -100,14 +99,13 @@ class BookReminderNotificationTest extends TestCase
 
     }
 
-
     /** @test */
     public function 書籍タイトルが取得できない場合はデフォルトの書籍名で生成される(): void
     {
         $plan = (object) ['book' => null];
 
         $notification = new BookReminderNotification($plan, 'on_due_date');
-        $user = new User();
+        $user = new User;
 
         $data = $notification->toArray($user);
 
@@ -122,7 +120,7 @@ class BookReminderNotificationTest extends TestCase
     public function メール通知の内容が正しく構築される(): void
     {
         $notification = new BookReminderNotification(null, 'on_due_date');
-        $user = new User();
+        $user = new User;
 
         $mailMessage = $notification->toMail($user);
 
