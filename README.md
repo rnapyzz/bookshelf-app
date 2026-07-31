@@ -205,6 +205,7 @@ GOOGLE_BOOKS_API_KEY=your_api_key
 | POST | /api/v1/books        | 書籍を新規登録する | 必要 |
 | PUT  | /api/v1/books/{book} | 書籍情報を更新する | 必要 |
 | DELETE | /api/v1/books/{book} | 書籍を削除する | 必要 |
+
 ※ 認証が必要なAPIを使用する場合は、ログインのAPI（`/api/v1/login`）を実行し、<br>
 返却されたトークンを `Authorizationヘッダ`に Bearerトークン として設定してリクエストしてください。
 
