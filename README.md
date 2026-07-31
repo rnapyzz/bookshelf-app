@@ -197,7 +197,7 @@ GOOGLE_BOOKS_API_KEY=your_api_key
   - phpMyAdmin
 
 ## APIエンドポイント
-| メソッド | URL                  | 概要      | 認証 |
+| メソッド | URI                  | 概要      | 認証 |
 |:-----|:---------------------|:--------|:---|
 | POST | /api/v1/login        | ログインする  | 不要 |
 | GET  | /api/v1/books        | 書籍一覧を取得する | 不要 |
