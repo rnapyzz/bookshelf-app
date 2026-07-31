@@ -17,6 +17,9 @@ class BookController extends Controller
 {
     /**
      * 書籍一覧を取得する
+     *
+     * @param SearchBookRequest $request
+     * @return AnonymousResourceCollection
      */
     public function index(SearchBookRequest $request): AnonymousResourceCollection
     {
@@ -37,6 +40,9 @@ class BookController extends Controller
 
     /**
      * 書籍詳細を取得する
+     *
+     * @param Book $book
+     * @return BookResource
      */
     public function show(Book $book): BookResource
     {
@@ -48,31 +54,11 @@ class BookController extends Controller
     }
 
     /**
-     * 書籍を登録する
-     */
-    public function store(StoreBookRequest $request): JsonResponse
-    {
-        $validated = $request->validated();
-        $validated['user_id'] = auth()->id();
-
-        $book = DB::transaction(function () use ($request, $validated) {
-
-            $book = Book::create($validated);
-
-            if ($request->has('genres')) {
-                $book->genres()->sync($request->genres);
-            }
-
-            return $book;
-        });
-
-        return new BookResource($book->load('genres'))
-            ->response()
-            ->setStatusCode(201);
-    }
-
-    /**
      * 書籍を更新する
+     *
+     * @param UpdatedBookRequest $request
+     * @param Book $book
+     * @return JsonResponse
      */
     public function update(UpdatedBookRequest $request, Book $book): JsonResponse
     {
@@ -92,6 +78,8 @@ class BookController extends Controller
     /**
      * 書籍を削除する
      *
+     * @param Book $book
+     * @return JsonResponse
      * @throws AuthorizationException
      */
     public function destroy(Book $book): JsonResponse

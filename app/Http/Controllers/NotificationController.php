@@ -10,6 +10,9 @@ class NotificationController extends Controller
 {
     /**
      * 通知一覧を表示する
+     *
+     * @param Request $request
+     * @return View
      */
     public function index(Request $request): View
     {
@@ -20,6 +23,10 @@ class NotificationController extends Controller
 
     /**
      * 特定の通知を既読にする
+     *
+     * @param Request $request
+     * @param string $id
+     * @return RedirectResponse
      */
     public function markAsRead(Request $request, string $id): RedirectResponse
     {
