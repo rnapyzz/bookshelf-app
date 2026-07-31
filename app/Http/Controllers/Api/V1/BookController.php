@@ -60,27 +60,23 @@ class BookController extends Controller
             $book->genres()->sync($request->genres);
         }
 
-        return (new BookResource($book->load('genres')))
+        return new BookResource($book->load('genres'))
             ->response()
             ->setStatusCode(201);
     }
 
     /**
      * 書籍を更新する
-     *
-     * @throws AuthorizationException
      */
     public function update(UpdatedBookRequest $request, Book $book): JsonResponse
     {
-        $this->authorize('update', $book);
-
         $book->update($request->validated());
 
         if ($request->has('genres')) {
             $book->genres()->sync($request->genres);
         }
 
-        return (new BookResource($book->load('genres')))
+        return new BookResource($book->load('genres'))
             ->response()
             ->setStatusCode(200);
     }
