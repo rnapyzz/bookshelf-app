@@ -11,6 +11,7 @@ use App\Models\Book;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
@@ -54,11 +55,16 @@ class BookController extends Controller
         $validated = $request->validated();
         $validated['user_id'] = auth()->id();
 
-        $book = Book::create($validated);
+        $book = DB::transaction(function () use ($request, $validated) {
 
-        if ($request->has('genres')) {
-            $book->genres()->sync($request->genres);
-        }
+            $book = Book::create($validated);
+
+            if ($request->has('genres')) {
+                $book->genres()->sync($request->genres);
+            }
+
+            return $book;
+        });
 
         return new BookResource($book->load('genres'))
             ->response()
@@ -70,11 +76,13 @@ class BookController extends Controller
      */
     public function update(UpdatedBookRequest $request, Book $book): JsonResponse
     {
-        $book->update($request->validated());
+        DB::transaction(function () use ($request, $book) {
+            $book->update($request->validated());
 
-        if ($request->has('genres')) {
-            $book->genres()->sync($request->genres);
-        }
+            if ($request->has('genres')) {
+                $book->genres()->sync($request->genres);
+            }
+        });
 
         return new BookResource($book->load('genres'))
             ->response()
