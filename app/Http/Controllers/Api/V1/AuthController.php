@@ -13,6 +13,10 @@ class AuthController extends Controller
 {
     /**
      * ログインしてsanctumのアクセストークンを発行する
+     *
+     * @param LoginRequest $request
+     * @return JsonResponse
+     * @throws ValidationException
      */
     public function login(LoginRequest $request): JsonResponse
     {

@@ -3,17 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class FavoriteController extends Controller
 {
-    public function index()
+    /**
+     * お気に入り書籍一覧を表示する
+     *
+     * @return View
+     */
+    public function index(): View
     {
         $books = auth()->user()->favoriteBooks()->paginate(10);
 
         return view('favorites.index', compact('books'));
     }
 
-    public function toggle(Book $book)
+    /**
+     * お気に入りをトグルする
+     *
+     * @param Book $book
+     * @return RedirectResponse
+     */
+    public function toggle(Book $book): RedirectResponse
     {
         auth()->user()->favoriteBooks()->toggle($book->id);
 

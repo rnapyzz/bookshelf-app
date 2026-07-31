@@ -15,8 +15,10 @@ class ReportController extends Controller
 {
     /**
      * マイ読書レポートを表示する
+     *
+     * @return View
      */
-    public function index(Request $request): View
+    public function index(): View
     {
         $user = Auth::user();
 
