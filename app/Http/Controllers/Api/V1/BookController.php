@@ -16,6 +16,32 @@ use Illuminate\Support\Facades\DB;
 class BookController extends Controller
 {
     /**
+     * 書籍を新規登録する
+     *
+     * @param StoreBookRequest $request
+     * @return JsonResponse
+     */
+    public function store(StoreBookRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+        $validated['user_id'] = auth()->id();
+
+        $book = DB::transaction(function () use ($request, $validated) {
+            $book = Book::create($validated);
+
+            if ($request->has('genres')) {
+                $book->genres()->sync($request->genres);
+            }
+
+            return $book;
+        });
+
+        return (new BookResource($book->load('genres')))
+            ->response()
+            ->setStatusCode(201);
+    }
+
+    /**
      * 書籍一覧を取得する
      *
      * @param SearchBookRequest $request
@@ -70,7 +96,7 @@ class BookController extends Controller
             }
         });
 
-        return new BookResource($book->load('genres'))
+        return (new BookResource($book->load('genres')))
             ->response()
             ->setStatusCode(200);
     }
