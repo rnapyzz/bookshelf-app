@@ -31,7 +31,7 @@ class HandlerTest extends TestCase
 
         $response->assertStatus(404)
             ->assertJson([
-                'message' => '指定されたエンドポイントが見つかりません'
+                'message' => '指定されたエンドポイントが見つかりません',
             ]);
     }
 
@@ -65,7 +65,7 @@ class HandlerTest extends TestCase
     }
 
     /** @test */
-    public function apiで許可されていないHTTPメソッドの場合は405メッセージを返す(): void
+    public function apiで許可されていない_htt_pメソッドの場合は405メッセージを返す(): void
     {
         $book = Book::factory()->create();
 

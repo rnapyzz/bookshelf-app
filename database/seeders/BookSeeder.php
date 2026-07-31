@@ -6,6 +6,7 @@ use App\Models\Book;
 use App\Models\Genre;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class BookSeeder extends Seeder
 {
@@ -118,17 +119,20 @@ class BookSeeder extends Seeder
             ],
         ];
 
-        foreach ($books as $book) {
-            $genres = $book['genres'];
-            unset($book['genres']);
+        foreach ($books as $bookData) {
+            DB::transaction(function () use ($bookData, $users) {
 
-            $book = Book::firstOrCreate(
-                ['isbn' => $book['isbn']],
-                array_merge($book, ['user_id' => $users->random()->id])
-            );
+                $genres = $bookData['genres'];
+                unset($bookData['genres']);
 
-            $genreIds = Genre::whereIn('name', $genres)->pluck('id');
-            $book->genres()->sync($genreIds);
+                $book = Book::firstOrCreate(
+                    ['isbn' => $bookData['isbn']],
+                    array_merge($bookData, ['user_id' => $users->random()->id])
+                );
+
+                $genreIds = Genre::whereIn('name', $genres)->pluck('id');
+                $book->genres()->sync($genreIds);
+            });
         }
     }
 }

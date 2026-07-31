@@ -84,29 +84,29 @@ class SendBookRemindersTest extends TestCase
 
         Notification::assertSentTo(
             [$user3DaysBefore],
-            function (BookReminderNotification $notification)
-            {
-                $data = $notification->toArray(new User());
+            function (BookReminderNotification $notification) {
+                $data = $notification->toArray(new User);
+
                 return $data['timing'] === 'three_days_before';
             }
         );
 
         Notification::assertSentTo(
             [$userOnDueDate],
-            function (BookReminderNotification $notification)
-            {
-                $data = $notification->toArray(new User());
+            function (BookReminderNotification $notification) {
+                $data = $notification->toArray(new User);
+
                 return $data['timing'] === 'on_due_date';
             }
         );
 
         Notification::assertSentTo(
             [$user3DaysAfter],
-            function (BookReminderNotification $notification)
-            {
-                $data = $notification->toArray(new User());
+            function (BookReminderNotification $notification) {
+                $data = $notification->toArray(new User);
+
                 return $data['timing'] === 'three_days_after';
             }
         );
-   }
+    }
 }

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ReviewLikeSeeder extends Seeder
 {
@@ -17,14 +18,18 @@ class ReviewLikeSeeder extends Seeder
         $users = User::all();
 
         foreach ($reviews as $review) {
-            $potentialLikers = $users->where('id', '!=', $review->user_id);
+            DB::transaction(function () use ($review, $users) {
 
-            $likers = $potentialLikers->random(rand(0, 3));
+                $potentialLikers = $users->where('id', '!=', $review->user_id);
 
-            foreach ($likers as $user) {
-                $review->likedByUsers()->syncWithoutDetaching([$user->id]);
-            }
+                if ($potentialLikers->isNotEmpty()) {
+                    $likers = $potentialLikers->random(rand(0, 3));
 
+                    foreach ($likers as $user) {
+                        $review->likedByUsers()->syncWithoutDetaching([$user->id]);
+                    }
+                }
+            });
         }
     }
 }
