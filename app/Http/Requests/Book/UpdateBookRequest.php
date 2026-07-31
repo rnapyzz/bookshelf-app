@@ -13,7 +13,9 @@ class UpdateBookRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $book = $this->route('book');
+
+        return $this->user()->can('update', $book);
     }
 
     /**

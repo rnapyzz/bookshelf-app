@@ -36,14 +36,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/reading-plans/{reading_plan}/complete', [ReadingPlanController::class, 'complete'])->name('reading-plans.complete');
     Route::get('/notifications/', [NotificationController::class, 'index'])->name('notifications.index');
     Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/books/{book}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::get('/reviews/{review}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
+    Route::put('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
+    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 });
 
 Route::get('/books', [BookController::class, 'index'])->name('books.index');
 Route::get('/books/{book}', [BookController::class, 'show'])->name('books.show');
-
-Route::post('/books/{book}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
-Route::get('/reviews/{review}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
-Route::put('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
-Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
-
 Route::get('/ranking', [RankingController::class, 'index'])->name('ranking.index');
