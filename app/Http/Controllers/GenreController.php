@@ -11,8 +11,6 @@ class GenreController extends Controller
 {
     /**
      * ジャンルの一覧を表示する
-     *
-     * @return View
      */
     public function index(): View
     {
@@ -23,9 +21,6 @@ class GenreController extends Controller
 
     /**
      * ジャンルの詳細を表示する
-     *
-     * @param Genre $genre
-     * @return View
      */
     public function show(Genre $genre): View
     {
@@ -36,8 +31,6 @@ class GenreController extends Controller
 
     /**
      * ジャンルを新規作成ページを表示する
-     *
-     * @return View
      */
     public function create(): View
     {
@@ -46,9 +39,6 @@ class GenreController extends Controller
 
     /**
      * ジャンルを新規作成する
-     *
-     * @param GenreRequest $request
-     * @return RedirectResponse
      */
     public function store(GenreRequest $request): RedirectResponse
     {
@@ -59,9 +49,6 @@ class GenreController extends Controller
 
     /**
      * ジャンルの編集ページを表示する
-     *
-     * @param Genre $genre
-     * @return View
      */
     public function edit(Genre $genre): View
     {
@@ -70,10 +57,6 @@ class GenreController extends Controller
 
     /**
      * ジャンルを更新する
-     *
-     * @param GenreRequest $request
-     * @param Genre $genre
-     * @return RedirectResponse
      */
     public function update(GenreRequest $request, Genre $genre): RedirectResponse
     {
@@ -84,9 +67,6 @@ class GenreController extends Controller
 
     /**
      * ジャンルを削除する
-     *
-     * @param Genre $genre
-     * @return RedirectResponse
      */
     public function destroy(Genre $genre): RedirectResponse
     {

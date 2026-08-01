@@ -7,6 +7,7 @@ use App\Http\Requests\ReadingPlan\StoreReadingPlanRequest;
 use App\Http\Requests\ReadingPlan\UpdateReadingPlanRequest;
 use App\Models\Book;
 use App\Models\ReadingPlan;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,9 +17,6 @@ class ReadingPlanController extends Controller
 {
     /**
      * 読書計画一覧を表示する
-     *
-     * @param Request $request
-     * @return View
      */
     public function index(Request $request): View
     {
@@ -38,8 +36,6 @@ class ReadingPlanController extends Controller
 
     /**
      * 読書計画の新規作成画面を表示する
-     *
-     * @return View
      */
     public function create(): View
     {
@@ -50,9 +46,6 @@ class ReadingPlanController extends Controller
 
     /**
      * 読書計画を作成する
-     *
-     * @param StoreReadingPlanRequest $request
-     * @return RedirectResponse
      */
     public function store(StoreReadingPlanRequest $request): RedirectResponse
     {
@@ -71,9 +64,7 @@ class ReadingPlanController extends Controller
     /**
      * 読書計画の編集画面を表示する
      *
-     * @param ReadingPlan $readingPlan
-     * @return View
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      */
     public function edit(ReadingPlan $readingPlan): View
     {
@@ -87,10 +78,7 @@ class ReadingPlanController extends Controller
     /**
      * 読書計画を更新する
      *
-     * @param UpdateReadingPlanRequest $request
-     * @param ReadingPlan $readingPlan
-     * @return RedirectResponse
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      */
     public function update(UpdateReadingPlanRequest $request, ReadingPlan $readingPlan): RedirectResponse
     {
@@ -111,9 +99,7 @@ class ReadingPlanController extends Controller
     /**
      * 読書計画のステータスを完了状態にする
      *
-     * @param ReadingPlan $readingPlan
-     * @return RedirectResponse
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      */
     public function complete(ReadingPlan $readingPlan): RedirectResponse
     {
@@ -130,9 +116,7 @@ class ReadingPlanController extends Controller
     /**
      * 読書計画を削除する
      *
-     * @param ReadingPlan $readingPlan
-     * @return RedirectResponse
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      */
     public function destroy(ReadingPlan $readingPlan): RedirectResponse
     {

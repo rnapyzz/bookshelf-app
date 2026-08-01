@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ReviewRequest;
 use App\Models\Book;
 use App\Models\Review;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -12,10 +13,6 @@ class ReviewController extends Controller
 {
     /**
      * レビューを新規作成する
-     *
-     * @param ReviewRequest $request
-     * @param Book $book
-     * @return RedirectResponse
      */
     public function store(ReviewRequest $request, Book $book): RedirectResponse
     {
@@ -31,9 +28,7 @@ class ReviewController extends Controller
     /**
      * レビューの編集画面を表示する
      *
-     * @param Review $review
-     * @return View
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      */
     public function edit(Review $review): View
     {
@@ -45,10 +40,7 @@ class ReviewController extends Controller
     /**
      * レビューを更新する
      *
-     * @param ReviewRequest $request
-     * @param Review $review
-     * @return RedirectResponse
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      */
     public function update(ReviewRequest $request, Review $review): RedirectResponse
     {
@@ -62,9 +54,7 @@ class ReviewController extends Controller
     /**
      * レビューを削除する
      *
-     * @param Review $review
-     * @return RedirectResponse
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      */
     public function destroy(Review $review): RedirectResponse
     {
