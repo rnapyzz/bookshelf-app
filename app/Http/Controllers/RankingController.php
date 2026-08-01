@@ -9,8 +9,6 @@ class RankingController extends Controller
 {
     /**
      * ランキングページを表示する
-     *
-     * @return View
      */
     public function index(): View
     {

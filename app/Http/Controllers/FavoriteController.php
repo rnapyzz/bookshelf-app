@@ -10,8 +10,6 @@ class FavoriteController extends Controller
 {
     /**
      * お気に入り書籍一覧を表示する
-     *
-     * @return View
      */
     public function index(): View
     {
@@ -22,9 +20,6 @@ class FavoriteController extends Controller
 
     /**
      * お気に入りをトグルする
-     *
-     * @param Book $book
-     * @return RedirectResponse
      */
     public function toggle(Book $book): RedirectResponse
     {

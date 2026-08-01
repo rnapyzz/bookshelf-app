@@ -19,9 +19,6 @@ class BookController extends Controller
 {
     /**
      * 書籍一覧を表示する
-     *
-     * @param Request $request
-     * @return View
      */
     public function index(Request $request): View
     {
@@ -40,9 +37,6 @@ class BookController extends Controller
 
     /**
      * 書籍詳細画面を表示する
-     *
-     * @param Book $book
-     * @return View
      */
     public function show(Book $book): View
     {
@@ -57,8 +51,6 @@ class BookController extends Controller
 
     /**
      * 書籍新規登録画面を表示する
-     *
-     * @return View
      */
     public function create(): View
     {
@@ -69,9 +61,6 @@ class BookController extends Controller
 
     /**
      * 書籍を新規登録する
-     *
-     * @param StoreBookRequest $request
-     * @return RedirectResponse
      */
     public function store(StoreBookRequest $request): RedirectResponse
     {
@@ -101,8 +90,6 @@ class BookController extends Controller
     /**
      * 書籍情報の編集画面を表示する
      *
-     * @param Book $book
-     * @return View
      * @throws AuthorizationException
      */
     public function edit(Book $book): View
@@ -116,10 +103,6 @@ class BookController extends Controller
 
     /**
      * 書籍情報を更新する
-     *
-     * @param UpdateBookRequest $request
-     * @param Book $book
-     * @return RedirectResponse
      */
     public function update(UpdateBookRequest $request, Book $book): RedirectResponse
     {
@@ -147,8 +130,8 @@ class BookController extends Controller
     /**
      * 書籍情報を削除する
      *
-     * @param Book $book
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function destroy(Book $book)
@@ -165,9 +148,6 @@ class BookController extends Controller
 
     /**
      * ISBNからGoogle Books APIを利用して書籍情報を取得する
-     *
-     * @param string $isbn
-     * @return JsonResponse
      */
     public function fetchByIsbn(string $isbn): JsonResponse
     {

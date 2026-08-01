@@ -9,9 +9,6 @@ class ReviewLikeController extends Controller
 {
     /**
      * レビューのいいねをトグルする
-     *
-     * @param Review $review
-     * @return RedirectResponse
      */
     public function toggle(Review $review): RedirectResponse
     {

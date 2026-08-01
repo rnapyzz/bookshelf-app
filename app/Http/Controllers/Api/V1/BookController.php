@@ -17,9 +17,6 @@ class BookController extends Controller
 {
     /**
      * 書籍を新規登録する
-     *
-     * @param StoreBookRequest $request
-     * @return JsonResponse
      */
     public function store(StoreBookRequest $request): JsonResponse
     {
@@ -43,9 +40,6 @@ class BookController extends Controller
 
     /**
      * 書籍一覧を取得する
-     *
-     * @param SearchBookRequest $request
-     * @return AnonymousResourceCollection
      */
     public function index(SearchBookRequest $request): AnonymousResourceCollection
     {
@@ -66,9 +60,6 @@ class BookController extends Controller
 
     /**
      * 書籍詳細を取得する
-     *
-     * @param Book $book
-     * @return BookResource
      */
     public function show(Book $book): BookResource
     {
@@ -81,10 +72,6 @@ class BookController extends Controller
 
     /**
      * 書籍を更新する
-     *
-     * @param UpdatedBookRequest $request
-     * @param Book $book
-     * @return JsonResponse
      */
     public function update(UpdatedBookRequest $request, Book $book): JsonResponse
     {
@@ -104,8 +91,6 @@ class BookController extends Controller
     /**
      * 書籍を削除する
      *
-     * @param Book $book
-     * @return JsonResponse
      * @throws AuthorizationException
      */
     public function destroy(Book $book): JsonResponse
